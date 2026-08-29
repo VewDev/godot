@@ -88,24 +88,21 @@ public:
 	using MouseMode = InputClassEnums::MouseMode;
 	using CursorShape = InputClassEnums::CursorShape;
 
-	static constexpr int32_t JOYPADS_MAX = 16;
-
-	typedef void (*EventDispatchFunc)(const Ref<InputEvent> &p_event);
-
 	class JoypadFeatures {
-		public:
-			virtual ~JoypadFeatures() {}
+	public:
+		virtual ~JoypadFeatures() {}
 
-			virtual bool has_joy_vibration() const { return false; }
+		virtual bool has_joy_vibration() const { return false; }
 
-			virtual bool has_joy_light() const { return false; }
-			virtual void set_joy_light(const Color &p_color) {}
+		virtual bool has_joy_light() const { return false; }
+		virtual void set_joy_light(const Color &p_color) {}
 
-			virtual bool has_joy_motion_sensors() const { return false; }
-			virtual void set_joy_motion_sensors_enabled(bool p_enable) {}
+		virtual bool has_joy_motion_sensors() const { return false; }
+		virtual void set_joy_motion_sensors_enabled(bool p_enable) {}
 
-			virtual int get_joy_num_touchpads() const { return 0; }
-
+		virtual int get_joy_num_touchpads() const { return 0; }
+	};
+	
 	struct Joypad {
 		StringName name;
 		StringName uid;
@@ -123,6 +120,9 @@ public:
 		Input::JoypadFeatures *features = nullptr;
 	};
 
+	static constexpr int32_t JOYPADS_MAX = 16;
+
+	typedef void (*EventDispatchFunc)(const Ref<InputEvent> &p_event);
 
 private:
 	BitField<MouseButtonMask> mouse_button_mask = MouseButtonMask::NONE;
@@ -376,7 +376,7 @@ public:
 	bool is_mouse_mode_override_enabled();
 
 #ifdef TOOLS_ENABLED
-	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const;
+	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const override;
 #endif
 
 	static Input *get_singleton();
