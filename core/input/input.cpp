@@ -481,7 +481,6 @@ bool Input::is_action_just_pressed(const StringName &p_action, bool p_exact, Pla
 	}
 }
 
-
 bool Input::is_action_just_pressed_by_event(const StringName &p_action, const Ref<InputEvent> &p_event, bool p_exact, PlayerID p_player_id) const {
 	ERR_FAIL_COND_V_MSG(!InputMap::get_singleton()->has_action(p_action), false, InputMap::get_singleton()->suggest_actions(p_action));
 	EXTRACT_PARAM_OR_FAIL_V(event, p_event, false);
@@ -548,7 +547,6 @@ bool Input::is_action_just_released(const StringName &p_action, bool p_exact, Pl
 		return released_requirement && action_entry->value.released_process_frame == Engine::get_singleton()->get_process_frames();
 	}
 }
-
 
 bool Input::is_action_just_released_by_event(const StringName &p_action, const Ref<InputEvent> &p_event, bool p_exact, PlayerID p_player_id) const {
 	ERR_FAIL_COND_V_MSG(!InputMap::get_singleton()->has_action(p_action), false, InputMap::get_singleton()->suggest_actions(p_action));
@@ -811,7 +809,7 @@ void Input::joy_connection_changed(int p_idx, bool p_connected, const String &p_
 		for (int i = 0; i < (int)JoyAxis::MAX; i++) {
 			set_joy_axis(p_idx, (JoyAxis)i, 0.0f);
 		}
-		
+
 		MotionInfo *motion = joy_motion.getptr(p_idx);
 		if (motion != nullptr && motion->gamepad_motion != nullptr) {
 			delete motion->gamepad_motion;
@@ -1162,7 +1160,7 @@ void Input::_parse_input_event_impl(const Ref<InputEvent> &p_event, bool p_is_em
 		device_state.pressed[event_index] = is_pressed;
 
 		device_state.strength[event_index] = p_event->get_action_strength(E.key, false, player_id);
-		device_state.raw_strength[event_index] = p_event->get_action_raw_strength(E.key. false, player_id);
+		device_state.raw_strength[event_index] = p_event->get_action_raw_strength(E.key, false, player_id);
 		device_state.event_type[event_index] = p_event->get_type();
 
 		// Update the action's global state and cache.
@@ -1787,7 +1785,7 @@ void Input::release_pressed_events() {
 		_joy_axis.clear();
 
 		for (KeyValue<int, HashMap<StringName, Input::ActionState>> &player_entry : action_states) {
-		HashMap<StringName, Input::ActionState> &player_action_states = player_entry.value;
+			HashMap<StringName, Input::ActionState> &player_action_states = player_entry.value;
 			for (KeyValue<StringName, Input::ActionState> &action_entry : player_action_states) {
 				if (action_entry.value.cache.pressed) {
 					action_release(action_entry.key);
@@ -1802,7 +1800,6 @@ void Input::release_pressed_events() {
 			touch.finger_info.clear();
 		}
 	} else {
-
 		for (KeyValue<int, HashMap<StringName, Input::ActionState>> &player_entry : action_states) {
 			HashMap<StringName, Input::ActionState> &player_action_states = player_entry.value;
 			for (KeyValue<StringName, Input::ActionState> &action_entry : player_action_states) {

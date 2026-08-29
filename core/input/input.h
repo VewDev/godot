@@ -102,7 +102,7 @@ public:
 
 		virtual int get_joy_num_touchpads() const { return 0; }
 	};
-	
+
 	struct Joypad {
 		StringName name;
 		StringName uid;
