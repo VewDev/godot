@@ -730,8 +730,8 @@ void EditorSpinSlider::_focus_entered(bool p_hide_focus) {
 	value_input->set_text(get_text_value());
 	value_input->set_focus_next(find_next_valid_focus()->get_path());
 	value_input->set_focus_previous(find_prev_valid_focus()->get_path());
-	callable_mp((CanvasItem *)value_input, &CanvasItem::show).call_deferred();
-	callable_mp((Control *)value_input, &Control::grab_focus).call_deferred(p_hide_focus);
+	callable_mp((CanvasItem *)value_input_popup, &CanvasItem::show).call_deferred();
+	callable_mp((Control *)value_input, &Control::grab_focus).call_deferred(p_hide_focus, PlayerId::P1);
 	callable_mp(value_input, &LineEdit ::select_all).call_deferred();
 	emit_signal("value_focus_entered");
 }

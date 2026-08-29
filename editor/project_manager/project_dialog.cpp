@@ -873,8 +873,7 @@ void ProjectDialog::show_dialog(bool p_reset_name, bool p_is_confirmed) {
 		install_path_container->hide();
 		renderer_container->hide();
 		default_files_container->hide();
-
-		callable_mp((Control *)project_name, &Control::grab_focus).call_deferred(false);
+		callable_mp((Control *)project_name, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 		callable_mp(project_name, &LineEdit::select_all).call_deferred();
 	} else {
 		if (p_reset_name) {
@@ -944,7 +943,7 @@ void ProjectDialog::show_dialog(bool p_reset_name, bool p_is_confirmed) {
 			default_files_container->show();
 			edit_check_box->hide();
 
-			callable_mp((Control *)project_name, &Control::grab_focus).call_deferred(false);
+			callable_mp((Control *)project_name, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 			callable_mp(project_name, &LineEdit::select_all).call_deferred();
 		} else if (mode == MODE_INSTALL) {
 			set_title(TTR("Install Project:") + " " + zip_title);
@@ -958,7 +957,7 @@ void ProjectDialog::show_dialog(bool p_reset_name, bool p_is_confirmed) {
 			default_files_container->hide();
 			edit_check_box->show();
 
-			callable_mp((Control *)project_path, &Control::grab_focus).call_deferred(false);
+			callable_mp((Control *)project_path, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 		} else if (mode == MODE_DUPLICATE) {
 			set_title(TTRC("Duplicate Project"));
 			set_ok_button_text(TTRC("Duplicate"));
@@ -969,7 +968,7 @@ void ProjectDialog::show_dialog(bool p_reset_name, bool p_is_confirmed) {
 			default_files_container->hide();
 			edit_check_box->set_visible(duplicate_can_edit);
 
-			callable_mp((Control *)project_name, &Control::grab_focus).call_deferred(false);
+			callable_mp((Control *)project_name, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 			callable_mp(project_name, &LineEdit::select_all).call_deferred();
 		}
 

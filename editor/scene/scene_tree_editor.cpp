@@ -2450,7 +2450,7 @@ void SceneTreeDialog::_notification(int p_what) {
 				tree->update_tree();
 
 				// Select the search bar by default.
-				callable_mp((Control *)filter, &Control::grab_focus).call_deferred(false);
+				callable_mp((Control *)filter, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 			}
 		} break;
 

@@ -602,10 +602,10 @@ void FindReplaceBar::_show_search(bool p_with_replace, bool p_show_only) {
 
 	if (focus_replace) {
 		search_text->deselect();
-		callable_mp((Control *)replace_text, &Control::grab_focus).call_deferred(false);
+		callable_mp((Control *)replace_text, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 	} else {
 		replace_text->deselect();
-		callable_mp((Control *)search_text, &Control::grab_focus).call_deferred(false);
+		callable_mp((Control *)search_text, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 	}
 
 	if (on_one_line) {

@@ -30,23 +30,37 @@
 
 #ifndef DISABLE_DEPRECATED
 
-#include "control.h"
-
-#include "core/object/class_db.h"
-#include "servers/display/display_server.h" // IWYU pragma: keep // Needed to bind DisplayServerEnums enums.
-
-bool Control::_has_focus_bind_compat_110250() const {
-	return has_focus(false);
+bool Control::_has_focus_bind_compat_xxxxx() const {
+	return has_focus(false, PlayerId::P1);
 }
 
-void Control::_grab_focus_bind_compat_110250() {
-	return grab_focus(false);
+void Control::_grab_focus_bind_compat_xxxxx() {
+	grab_focus(false, PlayerId::P1);
+}
+
+void Control::_release_focus_bind_compat_102412() {
+	release_focus(PlayerId::P1);
+}
+
+Control *Control::_find_next_valid_focus_bind_compat_102412() const {
+	return find_next_valid_focus(PlayerId::P1);
+}
+
+Control *Control::_find_prev_valid_focus_bind_compat_102412() const {
+	return find_prev_valid_focus(PlayerId::P1);
+}
+
+Control *Control::_find_valid_focus_neighbor_bind_compat_102412(Side p_size) const {
+	return find_valid_focus_neighbor(p_size, PlayerId::P1);
 }
 
 void Control::_bind_compatibility_methods() {
-	ClassDB::bind_compatibility_method(D_METHOD("has_focus"), &Control::_has_focus_bind_compat_110250);
-	ClassDB::bind_compatibility_method(D_METHOD("grab_focus"), &Control::_grab_focus_bind_compat_110250);
-
+	ClassDB::bind_compatibility_method(D_METHOD("has_focus"), &Control::_has_focus_bind_compat_102412);
+	ClassDB::bind_compatibility_method(D_METHOD("grab_focus"), &Control::_grab_focus_bind_compat_102412);
+	ClassDB::bind_compatibility_method(D_METHOD("release_focus"), &Control::_release_focus_bind_compat_102412);
+	ClassDB::bind_compatibility_method(D_METHOD("find_next_valid_focus"), &Control::_find_next_valid_focus_bind_compat_102412);
+	ClassDB::bind_compatibility_method(D_METHOD("find_prev_valid_focus"), &Control::_find_prev_valid_focus_bind_compat_102412);
+	ClassDB::bind_compatibility_method(D_METHOD("find_valid_focus_neighbor", "side"), &Control::_find_valid_focus_neighbor_bind_compat_102412);
 	ClassDB::bind_compatibility_method(D_METHOD("set_accessibility_live", "mode"), (void (Control::*)(DisplayServerEnums::AccessibilityLiveMode))&Control::set_accessibility_live);
 	ClassDB::bind_compatibility_method(D_METHOD("get_accessibility_live"), (DisplayServerEnums::AccessibilityLiveMode (Control::*)() const) & Control::get_accessibility_live);
 }

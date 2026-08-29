@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  viewport.compat.inc                                                   */
+/*  input_event.compat.inc                                                */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -30,42 +30,22 @@
 
 #ifndef DISABLE_DEPRECATED
 
-#include "viewport.h"
-
-#include "core/object/class_db.h"
-
-#ifndef XR_DISABLED
-bool Viewport::_is_using_xr_115799() {
-	return is_using_xr();
-}
-#endif
-
-void Viewport::_bind_compatibility_methods() {
-#ifndef XR_DISABLED
-	ClassDB::bind_compatibility_method(D_METHOD("is_using_xr"), &Viewport::_is_using_xr_115799);
-#endif
-
-void Viewport::_gui_remove_focus_for_window_bind_compat_102412(Node *p_window) {
-	_gui_remove_focus_for_window(p_window, PlayerId::P1);
+bool InputEvent::_is_action_pressed_bind_compat_102412(const StringName &p_action, bool p_allow_echo, bool p_exact_match) const {
+	return is_action_pressed(p_action, p_allow_echo, p_exact_match, PlayerId::P1);
 }
 
-void Viewport::_push_text_input_bind_compat_102412(const String &p_text) {
-	push_text_input(p_text, PlayerId::P1);
+bool InputEvent::_is_action_released_bind_compat_102412(const StringName &p_action, bool p_exact_match) const {
+	return is_action_released(p_action, p_exact_match, PlayerId::P1);
 }
 
-void Viewport::_gui_release_focus_bind_compat_102412() {
-	gui_release_focus(PlayerId::P1);
+float InputEvent::_get_action_strength_bind_compat_102412(const StringName &p_action, bool p_exact_match) const {
+	return get_action_strength(p_action, p_exact_match, PlayerId::P1);
 }
 
-Control *Viewport::_gui_get_focus_owner_bind_compat_102412() const {
-	return gui_get_focus_owner(PlayerId::P1);
-}
-
-void Viewport::_bind_compatibility_methods() {
-	ClassDB::bind_compatibility_method(D_METHOD("_gui_remove_focus_for_window"), &Viewport::_gui_remove_focus_for_window_bind_compat_102412);
-	ClassDB::bind_compatibility_method(D_METHOD("push_text_input", "text"), &Viewport::_push_text_input_bind_compat_102412);
-	ClassDB::bind_compatibility_method(D_METHOD("gui_release_focus"), &Viewport::_gui_release_focus_bind_compat_102412);
-	ClassDB::bind_compatibility_method(D_METHOD("gui_get_focus_owner"), &Viewport::_gui_get_focus_owner_bind_compat_102412);
+void InputEvent::_bind_compatibility_methods() {
+	ClassDB::bind_compatibility_method(D_METHOD("is_action_pressed", "action", "allow_echo", "exact_match"), &InputEvent::_is_action_pressed_bind_compat_102412, DEFVAL(false), DEFVAL(false));
+	ClassDB::bind_compatibility_method(D_METHOD("is_action_released", "action", "exact_match"), &InputEvent::_is_action_released_bind_compat_102412, DEFVAL(false));
+	ClassDB::bind_compatibility_method(D_METHOD("get_action_strength", "action", "exact_match"), &InputEvent::_get_action_strength_bind_compat_102412, DEFVAL(false));
 }
 
 #endif // DISABLE_DEPRECATED

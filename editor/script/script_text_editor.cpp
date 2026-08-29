@@ -1757,11 +1757,75 @@ bool ScriptTextEditor::_edit_option(int p_op) {
 		case LOOKUP_SYMBOL:
 		case EDIT_COMPLETE:
 		case EDIT_TOGGLE_COMMENT: {
-			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false);
+			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false, PlayerId::P1);
 		}
 	}
 
 	switch (p_op) {
+		case EDIT_UNDO: {
+			tx->undo();
+			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false, PlayerId::P1);
+		} break;
+		case EDIT_REDO: {
+			tx->redo();
+			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false, PlayerId::P1);
+		} break;
+		case EDIT_CUT: {
+			tx->cut();
+			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false, PlayerId::P1);
+		} break;
+		case EDIT_COPY: {
+			tx->copy();
+			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false, PlayerId::P1);
+		} break;
+		case EDIT_PASTE: {
+			tx->paste();
+			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false, PlayerId::P1);
+		} break;
+		case EDIT_SELECT_ALL: {
+			tx->select_all();
+			callable_mp((Control *)tx, &Control::grab_focus).call_deferred(false, PlayerId::P1);
+		} break;
+		case EDIT_MOVE_LINE_UP: {
+			code_editor->get_text_editor()->move_lines_up();
+		} break;
+		case EDIT_MOVE_LINE_DOWN: {
+			code_editor->get_text_editor()->move_lines_down();
+		} break;
+		case EDIT_INDENT: {
+			Ref<Script> scr = script;
+			if (scr.is_null()) {
+				return;
+			}
+			tx->indent_lines();
+		} break;
+		case EDIT_UNINDENT: {
+			Ref<Script> scr = script;
+			if (scr.is_null()) {
+				return;
+			}
+			tx->unindent_lines();
+		} break;
+		case EDIT_DELETE_LINE: {
+			code_editor->get_text_editor()->delete_lines();
+		} break;
+		case EDIT_DUPLICATE_SELECTION: {
+			code_editor->get_text_editor()->duplicate_selection();
+		} break;
+		case EDIT_DUPLICATE_LINES: {
+			code_editor->get_text_editor()->duplicate_lines();
+		} break;
+		case EDIT_TOGGLE_FOLD_LINE: {
+			tx->toggle_foldable_lines_at_carets();
+		} break;
+		case EDIT_FOLD_ALL_LINES: {
+			tx->fold_all_lines();
+			tx->queue_redraw();
+		} break;
+		case EDIT_UNFOLD_ALL_LINES: {
+			tx->unfold_all_lines();
+			tx->queue_redraw();
+		} break;
 		case EDIT_CREATE_CODE_REGION: {
 			tx->create_code_region();
 		} break;
