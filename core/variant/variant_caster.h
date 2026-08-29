@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
 #include "core/object/object.h"
 #include "core/variant/type_info.h"
 

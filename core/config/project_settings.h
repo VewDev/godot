@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
 #include "core/object/object.h"
 #include "core/os/thread_safe.h"
 #include "core/templates/rb_map.h"

@@ -88,45 +88,41 @@ public:
 	using MouseMode = InputClassEnums::MouseMode;
 	using CursorShape = InputClassEnums::CursorShape;
 
-	class JoypadFeatures {
-	public:
-		virtual ~JoypadFeatures() {}
-
-		virtual bool has_joy_vibration() const { return false; }
-
-		virtual bool has_joy_light() const { return false; }
-		virtual void set_joy_light(const Color &p_color) {}
-
-		virtual bool has_joy_motion_sensors() const { return false; }
-		virtual void set_joy_motion_sensors_enabled(bool p_enable) {}
-
-		virtual int get_joy_num_touchpads() const { return 0; }
-
-#undef CursorShape
-	enum CursorShape {
-		CURSOR_ARROW,
-		CURSOR_IBEAM,
-		CURSOR_POINTING_HAND,
-		CURSOR_CROSS,
-		CURSOR_WAIT,
-		CURSOR_BUSY,
-		CURSOR_DRAG,
-		CURSOR_CAN_DROP,
-		CURSOR_FORBIDDEN,
-		CURSOR_VSIZE,
-		CURSOR_HSIZE,
-		CURSOR_BDIAGSIZE,
-		CURSOR_FDIAGSIZE,
-		CURSOR_MOVE,
-		CURSOR_VSPLIT,
-		CURSOR_HSPLIT,
-		CURSOR_HELP,
-		CURSOR_MAX
-	};
-
 	static constexpr int32_t JOYPADS_MAX = 16;
 
 	typedef void (*EventDispatchFunc)(const Ref<InputEvent> &p_event);
+
+	class JoypadFeatures {
+		public:
+			virtual ~JoypadFeatures() {}
+
+			virtual bool has_joy_vibration() const { return false; }
+
+			virtual bool has_joy_light() const { return false; }
+			virtual void set_joy_light(const Color &p_color) {}
+
+			virtual bool has_joy_motion_sensors() const { return false; }
+			virtual void set_joy_motion_sensors_enabled(bool p_enable) {}
+
+			virtual int get_joy_num_touchpads() const { return 0; }
+
+	struct Joypad {
+		StringName name;
+		StringName uid;
+		PlayerID player_id = PlayerID::P1;
+		bool connected = false;
+		bool is_known = false;
+		bool last_buttons[(size_t)JoyButton::MAX] = { false };
+		float last_axis[(size_t)JoyAxis::MAX] = { 0.0f };
+		HatMask last_hat = HatMask::CENTER;
+		int mapping = -1;
+		int hat_current = 0;
+		Dictionary info;
+		bool has_light = false;
+		bool has_vibration = false;
+		Input::JoypadFeatures *features = nullptr;
+	};
+
 
 private:
 	BitField<MouseButtonMask> mouse_button_mask = MouseButtonMask::NONE;
@@ -244,23 +240,6 @@ private:
 		void update(const Vector2 &p_delta_p, const Vector2 &p_screen_delta_p);
 		void reset();
 		VelocityTrack();
-	};
-
-	struct Joypad {
-		StringName name;
-		StringName uid;
-		PlayerID player_id = PlayerID::P1;
-		bool connected = false;
-		bool is_known = false;
-		bool last_buttons[(size_t)JoyButton::MAX] = { false };
-		float last_axis[(size_t)JoyAxis::MAX] = { 0.0f };
-		HatMask last_hat = HatMask::CENTER;
-		int mapping = -1;
-		int hat_current = 0;
-		Dictionary info;
-		bool has_light = false;
-		bool has_vibration = false;
-		Input::JoypadFeatures *features = nullptr;
 	};
 
 	VelocityTrack mouse_velocity_track;
@@ -397,7 +376,7 @@ public:
 	bool is_mouse_mode_override_enabled();
 
 #ifdef TOOLS_ENABLED
-	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const override;
+	void get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const;
 #endif
 
 	static Input *get_singleton();
@@ -420,8 +399,6 @@ public:
 
 	float get_axis(const StringName &p_negative_action, const StringName &p_positive_action, PlayerID p_player_id = PlayerID::P1) const;
 	Vector2 get_vector(const StringName &p_negative_x, const StringName &p_positive_x, const StringName &p_negative_y, const StringName &p_positive_y, float p_deadzone = -1.0f, PlayerID p_player_id = PlayerID::P1) const;
-
-	HashMap<int, Joypad> _get_joy_names() const { return joy_names; }
 
 	float get_joy_axis(int p_device, JoyAxis p_axis) const;
 	String get_joy_name(int p_idx);
